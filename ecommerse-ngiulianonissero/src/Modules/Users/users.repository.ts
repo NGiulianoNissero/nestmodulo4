@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import IUser from 'src/Interfaces/user.interface';
 
 @Injectable()
 export class UsersRepository {
@@ -45,7 +46,34 @@ export class UsersRepository {
     },
   ];
 
-  async getUsers() {
-    return this.users;
+  async getUsers(): Promise<IUser[]> {
+    return await this.users;
+  }
+
+  async getUserById(id: number): Promise<IUser> {
+    return await this.users.find((user) => user.id === id);
+  }
+
+  async createUser(user: Omit<IUser, 'id'>): Promise<IUser> {
+    const id = this.users.length + 1;
+    await this.users.push({ id, ...user });
+    return { id, ...user };
+  }
+
+  async updateUser(name: string, id: number): Promise<IUser> {
+    const user = this.users.find((user) => user.id === id);
+    if (!user) throw new Error('No se encontro un usuario con ese id');
+    user.name = name;
+    return user;
+  }
+
+  async deleteUser(id: number): Promise<IUser> {
+    const user = this.users.find((user) => user.id === id);
+
+    if (!user) throw new Error('Usuario no encontrado');
+
+    const newUsers = this.users.filter((user) => user.id !== id);
+    this.users = newUsers;
+    return user;
   }
 }
