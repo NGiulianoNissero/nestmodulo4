@@ -10,9 +10,10 @@ import { LoggerMiddleware } from 'src/Middlewares/logger.middleware';
 import { UsersRepository } from './users.repository';
 import { CreateUserValidation } from 'src/Middlewares/createUserValidation.middleware';
 import { UpdateValidation } from 'src/Middlewares/updateValidation.middleware';
+import { AuthModule } from '../Auth/auth.module';
 
 @Module({
-  imports: [],
+  imports: [AuthModule],
   controllers: [UsersController],
   providers: [UsersService, UsersRepository],
 })

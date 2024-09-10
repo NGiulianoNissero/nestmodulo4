@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import IProduct from 'src/Interfaces/product.interface';
 
 @Injectable()
@@ -40,10 +40,67 @@ export class ProductsRepository {
       stock: true,
       imgUrl: 'https://example.com/images/gaming-mouse.jpg',
     },
+    {
+      id: 5,
+      name: '4K Monitor',
+      description:
+        'A 32-inch 4K monitor with ultra-slim bezels and vivid colors.',
+      price: 499.99,
+      stock: true,
+      imgUrl: 'https://example.com/images/4k-monitor.jpg',
+    },
+    {
+      id: 6,
+      name: 'Mechanical Keyboard',
+      description: 'A backlit mechanical keyboard with customizable switches.',
+      price: 129.99,
+      stock: true,
+      imgUrl: 'https://example.com/images/mechanical-keyboard.jpg',
+    },
+    {
+      id: 7,
+      name: 'Smartwatch Series 5',
+      description:
+        'A stylish smartwatch with health tracking and customizable watch faces.',
+      price: 349.99,
+      stock: false,
+      imgUrl: 'https://example.com/images/smartwatch-series5.jpg',
+    },
+    {
+      id: 8,
+      name: 'Bluetooth Speaker',
+      description:
+        'A portable Bluetooth speaker with rich sound and water resistance.',
+      price: 89.99,
+      stock: true,
+      imgUrl: 'https://example.com/images/bluetooth-speaker.jpg',
+    },
+    {
+      id: 9,
+      name: 'VR Headset',
+      description:
+        'A next-gen VR headset with a wide field of view and smooth performance.',
+      price: 399.99,
+      stock: true,
+      imgUrl: 'https://example.com/images/vr-headset.jpg',
+    },
+    {
+      id: 10,
+      name: 'Portable Charger',
+      description:
+        'A high-capacity portable charger with fast charging capabilities.',
+      price: 49.99,
+      stock: true,
+      imgUrl: 'https://example.com/images/portable-charger.jpg',
+    },
   ];
 
-  async getProducts(): Promise<IProduct[]> {
-    return await this.products;
+  async getProducts(page: number, limit: number): Promise<IProduct[]> {
+    const skip = (page - 1) * limit;
+
+    const productsPage = this.products.slice(skip, skip + limit);
+
+    return productsPage;
   }
 
   async getProductById(id: number): Promise<IProduct> {
@@ -58,7 +115,8 @@ export class ProductsRepository {
 
   async updateProduct(name: string, id: number): Promise<IProduct> {
     const product = this.products.find((product) => product.id === id);
-    if (!product) throw new Error('No se encontro un producto con ese id');
+    if (!product)
+      throw new BadRequestException('No se encontro un producto con ese id');
     product.name = name;
     return product;
   }
@@ -66,7 +124,7 @@ export class ProductsRepository {
   async deleteProduct(id: number): Promise<IProduct> {
     const product = this.products.find((product) => product.id === id);
 
-    if (!product) throw new Error('Producto no encontrado');
+    if (!product) throw new BadRequestException('Producto no encontrado');
 
     const newProducts = this.products.filter((product) => product.id !== id);
     this.products = newProducts;

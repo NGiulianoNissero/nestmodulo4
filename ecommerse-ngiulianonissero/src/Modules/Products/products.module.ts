@@ -12,7 +12,6 @@ import { CreateProductValidation } from 'src/Middlewares/createProductValidation
 import { UpdateValidation } from 'src/Middlewares/updateValidation.middleware';
 
 @Module({
-  imports: [],
   controllers: [ProductsController],
   providers: [ProductsService, ProductsRepository],
 })

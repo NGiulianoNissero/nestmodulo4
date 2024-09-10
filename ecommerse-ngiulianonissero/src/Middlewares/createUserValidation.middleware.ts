@@ -1,5 +1,4 @@
 import {
-  BadGatewayException,
   BadRequestException,
   Injectable,
   NestMiddleware,
@@ -45,7 +44,7 @@ export class CreateUserValidation implements NestMiddleware {
 
     if (!phone) {
       throw new BadRequestException('El numero de telefono debe estar.');
-    } else if (typeof phone !== 'number') {
+    } else if (typeof phone !== 'string') {
       throw new BadRequestException(
         'El numero de telefono debe ser un numero.',
       );

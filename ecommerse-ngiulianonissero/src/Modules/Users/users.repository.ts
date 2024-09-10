@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import IUser from 'src/Interfaces/user.interface';
 
 @Injectable()
@@ -62,7 +62,8 @@ export class UsersRepository {
 
   async updateUser(name: string, id: number): Promise<IUser> {
     const user = this.users.find((user) => user.id === id);
-    if (!user) throw new Error('No se encontro un usuario con ese id');
+    if (!user)
+      throw new BadRequestException('No se encontro un usuario con ese id');
     user.name = name;
     return user;
   }
@@ -70,7 +71,7 @@ export class UsersRepository {
   async deleteUser(id: number): Promise<IUser> {
     const user = this.users.find((user) => user.id === id);
 
-    if (!user) throw new Error('Usuario no encontrado');
+    if (!user) throw new BadRequestException('Usuario no encontrado');
 
     const newUsers = this.users.filter((user) => user.id !== id);
     this.users = newUsers;

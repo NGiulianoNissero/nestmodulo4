@@ -6,8 +6,8 @@ import IProduct from 'src/Interfaces/product.interface';
 export class ProductsService {
   constructor(private productsRepository: ProductsRepository) {}
 
-  async getProducts(): Promise<IProduct[]> {
-    return await this.productsRepository.getProducts();
+  async getProducts(page: number, limit: number): Promise<IProduct[]> {
+    return await this.productsRepository.getProducts(page, limit);
   }
 
   async getProductById(id: number): Promise<IProduct> {
