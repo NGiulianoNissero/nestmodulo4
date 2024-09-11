@@ -43,22 +43,7 @@ export class UsersController {
   @UseGuards(AuthGuard)
   @Put(':id')
   async updateUser(@Param('id') id: string, @Body() body: UpdateUserDto) {
-    const { name, email, password, address, phone, country, city } = body;
-    if (name) await this.usersService.updateUser('name', name, Number(id));
-
-    if (email) await this.usersService.updateUser('email', email, Number(id));
-
-    if (password)
-      await this.usersService.updateUser('password', password, Number(id));
-
-    if (address) await this.usersService.updateUser('phone', phone, Number(id));
-
-    if (country)
-      await this.usersService.updateUser('country', country, Number(id));
-
-    if (city) await this.usersService.updateUser('city', city, Number(id));
-
-    return await this.usersService.getUserById(Number(id));
+    return await this.usersService.updateUser(body, Number(id));
   }
 
   @HttpCode(200)

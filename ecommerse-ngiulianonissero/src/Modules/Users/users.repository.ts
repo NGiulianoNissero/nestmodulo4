@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import IUser from 'src/modules/users/interface/user.interface';
+import { UpdateUserDto } from './dto/updateUser.dto';
 
 @Injectable()
 export class UsersRepository {
@@ -60,11 +61,15 @@ export class UsersRepository {
     return { id, ...user };
   }
 
-  async updateUser(property: string, value: string, id: number): Promise<void> {
-    const user = this.users.find((user) => user.id === id);
-    if (!user)
+  async updateUser(body: UpdateUserDto, id: number): Promise<IUser> {
+    const userIndex = this.users.findIndex((user) => user.id === id);
+    if (userIndex === -1)
       throw new BadRequestException('No se encontro un usuario con ese id');
-    user[property] = value;
+
+    return (this.users[userIndex] = {
+      ...this.users[userIndex],
+      ...body,
+    });
   }
 
   async deleteUser(id: number): Promise<IUser> {
