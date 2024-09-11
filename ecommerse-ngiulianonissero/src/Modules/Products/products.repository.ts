@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import IProduct from 'src/Interfaces/product.interface';
+import IProduct from 'src/modules/products/interface/product.interface';
 
 @Injectable()
 export class ProductsRepository {
@@ -113,12 +113,15 @@ export class ProductsRepository {
     return { id, ...product };
   }
 
-  async updateProduct(name: string, id: number): Promise<IProduct> {
+  async updateProduct(
+    property: string,
+    value: string | number | boolean,
+    id: number,
+  ): Promise<void> {
     const product = this.products.find((product) => product.id === id);
     if (!product)
       throw new BadRequestException('No se encontro un producto con ese id');
-    product.name = name;
-    return product;
+    product[property] = value;
   }
 
   async deleteProduct(id: number): Promise<IProduct> {

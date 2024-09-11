@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UsersRepository } from './users.repository';
-import IUser from 'src/Interfaces/user.interface';
-import { AuthService } from '../Auth/auth.service';
+import IUser from 'src/modules/users/interface/user.interface';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class UsersService {
@@ -24,8 +24,8 @@ export class UsersService {
     return await this.usersRepository.createUser(user);
   }
 
-  async updateUser(name: string, id: number): Promise<IUser> {
-    return await this.usersRepository.updateUser(name, id);
+  async updateUser(property: string, value: string, id: number): Promise<void> {
+    await this.usersRepository.updateUser(property, value, id);
   }
 
   async deleteUser(id: number): Promise<IUser> {
