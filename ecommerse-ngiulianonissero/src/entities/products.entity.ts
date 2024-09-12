@@ -7,13 +7,13 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { v4 as uuid } from 'uuid';
-import { ECategorie } from './categories.entity';
+import { ECategory } from './categories.entity';
 import { EOrderDetails } from './orderDetails.entity';
 
 @Entity({ name: 'products' })
 export class EProduct {
   @PrimaryGeneratedColumn('uuid')
-  id: string = uuid();
+  id?: string = uuid();
 
   @Column({ length: 50, nullable: false })
   name: string;
@@ -28,13 +28,13 @@ export class EProduct {
   stock: number;
 
   @Column()
-  imgUrl: string =
+  imgUrl?: string =
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmiqR_gB1aE6SmGpJvgdi6j6MZYtLpcSittA&s';
 
-  @OneToMany(() => ECategorie, (categorie) => categorie.product)
-  categories: ECategorie[];
+  @OneToMany(() => ECategory, (category) => category.product)
+  categories: ECategory[];
 
   @ManyToMany(() => EOrderDetails, (orderdetails) => orderdetails.product)
   @JoinTable()
-  orderDetails: EOrderDetails[];
+  orderDetails?: EOrderDetails[];
 }
