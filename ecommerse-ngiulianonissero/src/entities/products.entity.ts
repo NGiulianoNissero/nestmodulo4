@@ -1,0 +1,40 @@
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { v4 as uuid } from 'uuid';
+import { ECategorie } from './categories.entity';
+import { EOrderDetails } from './orderDetails.entity';
+
+@Entity({ name: 'products' })
+export class EProduct {
+  @PrimaryGeneratedColumn('uuid')
+  id: string = uuid();
+
+  @Column({ length: 50, nullable: false })
+  name: string;
+
+  @Column({ nullable: false, type: 'text' })
+  description: string;
+
+  @Column({ type: 'decimal', nullable: false, precision: 10, scale: 2 })
+  price: number;
+
+  @Column({ nullable: false })
+  stock: number;
+
+  @Column()
+  imgUrl: string =
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmiqR_gB1aE6SmGpJvgdi6j6MZYtLpcSittA&s';
+
+  @OneToMany(() => ECategorie, (categorie) => categorie.product)
+  categories: ECategorie[];
+
+  @ManyToMany(() => EOrderDetails, (orderdetails) => orderdetails.product)
+  @JoinTable()
+  orderDetails: EOrderDetails[];
+}

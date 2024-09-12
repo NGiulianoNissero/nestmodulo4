@@ -1,10 +1,10 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import IUser from 'src/modules/users/interface/user.interface';
+import IUser from './interface/user.interface';
 import { UpdateUserDto } from './dto/updateUser.dto';
 
 @Injectable()
 export class UsersRepository {
-  private users = [
+  private users: IUser[] = [
     {
       id: 1,
       email: 'john.doe@example.com',
@@ -52,7 +52,15 @@ export class UsersRepository {
   }
 
   async getUserById(id: number): Promise<IUser> {
-    return await this.users.find((user) => user.id === id);
+    const user = this.users.find((user) => user.id === id);
+
+    if (user === undefined)
+      throw new BadRequestException({
+        statusCode: 404,
+        message: 'bad request',
+      });
+
+    return user;
   }
 
   async createUser(user: Omit<IUser, 'id'>): Promise<IUser> {

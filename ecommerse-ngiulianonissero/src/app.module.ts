@@ -1,27 +1,27 @@
-import { Module } from '@nestjs/common';
+import { HttpException, Module } from '@nestjs/common';
 import { AuthModule } from './modules/auth/auth.module';
 import { ProductsModule } from './modules/products/products.module';
 import { UsersModule } from './modules/users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import typeOrmConfig from './config/typeorm.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      load: [typeOrmConfig],
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        host: configService.get<string>('DB_HOST'),
-        port: configService.get<number>('DB_PORT'),
-        database: configService.get<string>('DB_NAME'),
-        username: configService.get<string>('DB_USER'),
-        password: configService.get<string>('DB_PASS'),
-        synchronize: true,
-      }),
+      useFactory: (configService: ConfigService): TypeOrmModuleOptions => {
+        const ormConfig = configService.get<TypeOrmModuleOptions>('typeorm');
+
+        if (!ormConfig) throw new HttpException('Typeorm config problem', 500);
+
+        return ormConfig;
+      },
     }),
     AuthModule,
     ProductsModule,
