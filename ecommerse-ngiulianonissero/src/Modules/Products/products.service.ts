@@ -3,8 +3,7 @@ import { ProductsRepository } from './products.repository';
 import { EProduct } from '../../entities/products.entity';
 import { UpdateProductDto } from './dto/updateProduct.dto';
 import { CreateProductDto } from './dto/createProduct.dto';
-import { QueryRunner } from 'typeorm';
-import { connectionSource } from '../../config/typeorm.config';
+import { DataSource, QueryRunner } from 'typeorm';
 import { CategoriesService } from '../categories/categories.service';
 import { ECategory } from '../../entities/categories.entity';
 
@@ -13,6 +12,7 @@ export class ProductsService {
   constructor(
     private productsRepository: ProductsRepository,
     private categoriesService: CategoriesService,
+    private dataSource: DataSource,
   ) {}
 
   async getProducts(page: number, limit: number): Promise<EProduct[]> {
@@ -24,8 +24,8 @@ export class ProductsService {
   }
 
   async createProduct(body: CreateProductDto): Promise<EProduct> {
-    await connectionSource.initialize();
-    const queryRunner: QueryRunner = connectionSource.createQueryRunner();
+    const queryRunner: QueryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
       const newCategory: ECategory = await this.categoriesService.addCategory(
@@ -43,7 +43,11 @@ export class ProductsService {
       return newProduct;
     } catch (error) {
       await queryRunner.rollbackTransaction();
-      throw new BadRequestException('No se pudo crear el producto');
+      if (error instanceof Error) {
+        throw new BadRequestException(error.message);
+      } else {
+        throw new BadRequestException('No se pudo crear el producto');
+      }
     } finally {
       await queryRunner.release();
     }
@@ -55,5 +59,9 @@ export class ProductsService {
 
   async deleteProduct(id: string): Promise<void> {
     await this.productsRepository.deleteProduct(id);
+  }
+
+  async preloadProducts(): Promise<EProduct[]> {
+    return await this.productsRepository.preloadProducts();
   }
 }

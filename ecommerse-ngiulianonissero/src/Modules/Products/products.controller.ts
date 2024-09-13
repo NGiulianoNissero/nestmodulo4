@@ -57,5 +57,7 @@ export class ProductsController {
   }
 
   @Post('seeder')
-  preloadProducts() {}
+  async preloadProducts() {
+    return await this.productsService.preloadProducts();
+  }
 }

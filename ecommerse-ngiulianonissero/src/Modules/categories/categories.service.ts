@@ -20,13 +20,17 @@ export class CategoriesService {
     body: CreateCategoryDto,
     queryRunner: QueryRunner,
   ): Promise<ECategory> {
-    const { name } = body;
+    const { category } = body;
     const newCategory: ECategory = {
-      name,
+      name: category,
     };
     return await this.categoriesRepository.addCategory(
       newCategory,
       queryRunner,
     );
+  }
+
+  async findCategory(category: string): Promise<ECategory> {
+    return await this.categoriesRepository.findCategory(category);
   }
 }

@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ECategory } from '../../entities/categories.entity';
 import { QueryRunner, Repository } from 'typeorm';
 import products from '../../helpers/preloadProducts';
+import { EProduct } from '../../entities/products.entity';
 
 @Injectable()
 export class CategoriesRepository {
@@ -50,17 +51,32 @@ export class CategoriesRepository {
     category: ECategory,
     queryRunner: QueryRunner,
   ): Promise<ECategory> {
+    const categoryFounded: ECategory | null =
+      await this.categoriesRepository.findOneBy({ name: category.name });
+    if (categoryFounded) {
+      return categoryFounded;
+    }
+
     const newCategory: ECategory = await queryRunner.manager.create(
       ECategory,
       category,
     );
+
     await queryRunner.manager.save(ECategory, newCategory);
 
     if (!newCategory)
       throw new BadRequestException('Error al crear la categoria.');
 
-    console.log(newCategory);
-
     return newCategory;
+  }
+
+  async findCategory(category: string): Promise<ECategory> {
+    const categoryFounded: ECategory | null =
+      await this.categoriesRepository.findOneBy({ name: category });
+
+    if (!categoryFounded)
+      throw new BadRequestException(`No existe la categoria ${category}`);
+
+    return categoryFounded;
   }
 }

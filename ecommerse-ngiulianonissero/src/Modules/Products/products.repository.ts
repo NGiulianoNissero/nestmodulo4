@@ -1,16 +1,23 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { EProduct } from '../../entities/products.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { QueryRunner, Repository } from 'typeorm';
+import { DataSource, QueryRunner, Repository } from 'typeorm';
 import { UpdateProductDto } from './dto/updateProduct.dto';
+import products from '../../helpers/preloadProducts';
+import { CategoriesService } from '../categories/categories.service';
+import { ECategory } from '../../entities/categories.entity';
+import { CreateCategoryDto } from '../categories/dto/createCategory.dto';
+import e from 'express';
 
 @Injectable()
 export class ProductsRepository {
   constructor(
     @InjectRepository(EProduct) private productRepository: Repository<EProduct>,
+    private categoriesService: CategoriesService,
+    private dataSource: DataSource,
   ) {}
 
-  private products = [
+  private productsHD = [
     {
       id: 1,
       name: 'Laptop Pro',
@@ -102,6 +109,8 @@ export class ProductsRepository {
     },
   ];
 
+  private products = products;
+
   async getProducts(page: number, limit: number): Promise<EProduct[]> {
     const skip = (page - 1) * limit;
 
@@ -135,6 +144,12 @@ export class ProductsRepository {
     product: EProduct,
     queryRunner: QueryRunner,
   ): Promise<EProduct> {
+    const productFounded: EProduct | null =
+      await this.productRepository.findOneBy({ name: product.name });
+
+    if (productFounded)
+      throw new BadRequestException('Ya existe un producto con ese nombre');
+
     const newProduct = await queryRunner.manager.create(EProduct, product);
     await queryRunner.manager.save(EProduct, newProduct);
 
@@ -155,5 +170,47 @@ export class ProductsRepository {
 
   async deleteProduct(id: string): Promise<void> {
     await this.productRepository.delete({ id });
+  }
+
+  async preloadProducts(): Promise<EProduct[]> {
+    const productsFounded: EProduct[] = await this.productRepository.find();
+
+    if (productsFounded.length > 0)
+      throw new BadRequestException('Ya hay productos en la base de datos');
+
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      const products: EProduct[] = await Promise.all(
+        this.products.map(async (product) => {
+          const category: ECategory = await this.categoriesService.findCategory(
+            product.category,
+          );
+          const { name, description, price, stock } = product;
+          const productData: EProduct = {
+            name,
+            description,
+            price,
+            stock,
+            category: [category],
+          };
+          const newProduct: EProduct = await queryRunner.manager.create(
+            EProduct,
+            productData,
+          );
+          await queryRunner.manager.save(EProduct, newProduct);
+          return newProduct;
+        }),
+      );
+      await queryRunner.commitTransaction();
+      return products;
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw new BadRequestException('Error al precargar los productos');
+    } finally {
+      await queryRunner.release();
+    }
   }
 }

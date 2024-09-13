@@ -30,6 +30,6 @@ export class CreateProductDto {
   imgUrl: string;
 
   @IsNotEmpty()
-  @IsArray()
-  category: Array<string>;
+  @IsString()
+  category: string;
 }
