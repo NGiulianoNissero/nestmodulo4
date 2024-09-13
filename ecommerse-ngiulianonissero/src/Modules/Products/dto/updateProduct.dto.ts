@@ -1,10 +1,4 @@
-import {
-  IsBoolean,
-  IsNumber,
-  IsOptional,
-  IsString,
-  IsUrl,
-} from 'class-validator';
+import { IsNumber, IsOptional, IsString, IsUrl } from 'class-validator';
 
 export class UpdateProductDto {
   @IsOptional()
@@ -20,8 +14,8 @@ export class UpdateProductDto {
   price?: number;
 
   @IsOptional()
-  @IsBoolean()
-  stock?: boolean;
+  @IsNumber()
+  stock?: number;
 
   @IsOptional()
   @IsString()

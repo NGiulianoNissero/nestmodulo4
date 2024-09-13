@@ -10,6 +10,6 @@ export class ECategory {
   @Column({ length: 50, nullable: false })
   name: string;
 
-  @ManyToOne(() => EProduct, (product) => product.categories)
+  @ManyToOne(() => EProduct, (product) => product.category)
   product?: EProduct;
 }

@@ -1,7 +1,7 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ECategory } from '../../entities/categories.entity';
-import { Repository } from 'typeorm';
+import { QueryRunner, Repository } from 'typeorm';
 import products from '../../helpers/preloadProducts';
 
 @Injectable()
@@ -17,17 +17,26 @@ export class CategoriesRepository {
     return this.categoriesRepository.find();
   }
 
-  async addCategories(): Promise<ECategory[]> {
+  async preloadCategories(): Promise<ECategory[]> {
     const categoriesHC = this.products.map((product) => product.category);
     const uniqueCategories = [...new Set(categoriesHC)];
-    const categories: ECategory[] = uniqueCategories.map((element) => {
-      const category = { name: element };
-      return category;
-    });
-    for await (const category of categories) {
-      const newCategory = this.categoriesRepository.create(category);
-      await this.categoriesRepository.save(newCategory);
+
+    let count: number = 0;
+    for await (const categoryName of uniqueCategories) {
+      const categoryFounded: ECategory | null =
+        await this.categoriesRepository.findOneBy({ name: categoryName });
+
+      if (!categoryFounded) {
+        const newCategory = this.categoriesRepository.create({
+          name: categoryName,
+        });
+        await this.categoriesRepository.save(newCategory);
+
+        count++;
+      }
     }
+    if (count === 0)
+      throw new BadRequestException('Ya estan precargadas las categorias');
 
     const categoriesDB: ECategory[] = await this.categoriesRepository.find();
 
@@ -35,5 +44,23 @@ export class CategoriesRepository {
       throw new HttpException('Error al precargar las categorias', 500);
 
     return categoriesDB;
+  }
+
+  async addCategory(
+    category: ECategory,
+    queryRunner: QueryRunner,
+  ): Promise<ECategory> {
+    const newCategory: ECategory = await queryRunner.manager.create(
+      ECategory,
+      category,
+    );
+    await queryRunner.manager.save(ECategory, newCategory);
+
+    if (!newCategory)
+      throw new BadRequestException('Error al crear la categoria.');
+
+    console.log(newCategory);
+
+    return newCategory;
   }
 }

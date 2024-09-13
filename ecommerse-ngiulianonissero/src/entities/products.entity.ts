@@ -32,7 +32,7 @@ export class EProduct {
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmiqR_gB1aE6SmGpJvgdi6j6MZYtLpcSittA&s';
 
   @OneToMany(() => ECategory, (category) => category.product)
-  categories: ECategory[];
+  category: ECategory[];
 
   @ManyToMany(() => EOrderDetails, (orderdetails) => orderdetails.product)
   @JoinTable()

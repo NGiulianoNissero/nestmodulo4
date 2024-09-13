@@ -1,8 +1,15 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import IProduct from 'src/modules/products/interface/product.interface';
+import { EProduct } from '../../entities/products.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { QueryRunner, Repository } from 'typeorm';
+import { UpdateProductDto } from './dto/updateProduct.dto';
 
 @Injectable()
 export class ProductsRepository {
+  constructor(
+    @InjectRepository(EProduct) private productRepository: Repository<EProduct>,
+  ) {}
+
   private products = [
     {
       id: 1,
@@ -95,42 +102,58 @@ export class ProductsRepository {
     },
   ];
 
-  async getProducts(page: number, limit: number): Promise<IProduct[]> {
+  async getProducts(page: number, limit: number): Promise<EProduct[]> {
     const skip = (page - 1) * limit;
 
-    const productsPage = this.products.slice(skip, skip + limit);
+    const [productsPage, total] = await this.productRepository.findAndCount({
+      skip,
+      take: limit,
+    });
+
+    if (productsPage.length === 0)
+      throw new BadRequestException(
+        'No existen productos o no existe la pagina proporcionada',
+      );
 
     return productsPage;
   }
 
-  async getProductById(id: number): Promise<IProduct> {
-    return await this.products.find((product) => product.id === id);
+  async getProductById(id: string): Promise<EProduct> {
+    const productById: EProduct | null = await this.productRepository.findOneBy(
+      { id },
+    );
+
+    if (!productById)
+      throw new BadRequestException(
+        'No existe un producto con el id proporcionado.',
+      );
+
+    return productById;
   }
 
-  async createProduct(product: Omit<IProduct, 'id'>): Promise<IProduct> {
-    const id = this.products.length + 1;
-    await this.products.push({ id, ...product });
-    return { id, ...product };
+  async createProduct(
+    product: EProduct,
+    queryRunner: QueryRunner,
+  ): Promise<EProduct> {
+    const newProduct = await queryRunner.manager.create(EProduct, product);
+    await queryRunner.manager.save(EProduct, newProduct);
+
+    if (!newProduct)
+      throw new BadRequestException('Error al crear el producto');
+
+    return newProduct;
   }
 
-  async updateProduct(
-    property: string,
-    value: string | number | boolean,
-    id: number,
-  ): Promise<void> {
-    const product = this.products.find((product) => product.id === id);
-    if (!product)
-      throw new BadRequestException('No se encontro un producto con ese id');
-    product[property] = value;
+  async updateProduct(body: UpdateProductDto, id: string): Promise<void> {
+    const updatedProduct = await this.productRepository.update({ id }, body);
+
+    if (updatedProduct.affected === 0)
+      throw new BadRequestException(
+        'No se encontro un producto con el uuid proporcionado.',
+      );
   }
 
-  async deleteProduct(id: number): Promise<IProduct> {
-    const product = this.products.find((product) => product.id === id);
-
-    if (!product) throw new BadRequestException('Producto no encontrado');
-
-    const newProducts = this.products.filter((product) => product.id !== id);
-    this.products = newProducts;
-    return product;
+  async deleteProduct(id: string): Promise<void> {
+    await this.productRepository.delete({ id });
   }
 }

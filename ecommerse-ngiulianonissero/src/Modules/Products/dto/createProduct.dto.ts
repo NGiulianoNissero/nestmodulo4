@@ -1,7 +1,8 @@
 import {
-  IsBoolean,
+  IsArray,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
   IsUrl,
 } from 'class-validator';
@@ -20,11 +21,15 @@ export class CreateProductDto {
   price: number;
 
   @IsNotEmpty()
-  @IsBoolean()
-  stock: boolean;
+  @IsNumber()
+  stock: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   @IsUrl()
   imgUrl: string;
+
+  @IsNotEmpty()
+  @IsArray()
+  category: Array<string>;
 }
