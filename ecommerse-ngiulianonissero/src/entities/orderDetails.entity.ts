@@ -12,7 +12,7 @@ import { EProduct } from './products.entity';
 @Entity({ name: 'orderdetails' })
 export class EOrderDetails {
   @PrimaryGeneratedColumn('uuid')
-  id: string = uuid();
+  id?: string = uuid();
 
   @Column({ type: 'decimal', nullable: false, precision: 10, scale: 2 })
   price: number;

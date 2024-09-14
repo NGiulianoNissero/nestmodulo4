@@ -13,7 +13,7 @@ import { EOrderDetails } from './orderDetails.entity';
 @Entity({ name: 'orders' })
 export class EOrder {
   @PrimaryGeneratedColumn('uuid')
-  id: string = uuid();
+  id?: string = uuid();
 
   @Column()
   date: Date;
@@ -23,5 +23,5 @@ export class EOrder {
 
   @OneToOne(() => EOrderDetails, (orderDetails) => orderDetails.order)
   @JoinColumn()
-  orderDetails: EOrderDetails;
+  orderDetails?: EOrderDetails;
 }

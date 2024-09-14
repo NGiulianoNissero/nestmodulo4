@@ -1,9 +1,16 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import IUser from './interface/user.interface';
 import { UpdateUserDto } from './dto/updateUser.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { EUser } from '../../entities/users.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class UsersRepository {
+  constructor(
+    @InjectRepository(EUser) private userRepository: Repository<EUser>,
+  ) {}
+
   private users: IUser[] = [
     {
       id: 1,
@@ -51,16 +58,17 @@ export class UsersRepository {
     return await this.users;
   }
 
-  async getUserById(id: number): Promise<IUser> {
-    const user = this.users.find((user) => user.id === id);
+  async getUserById(id: string): Promise<EUser> {
+    const userFounded: EUser | null = await this.userRepository.findOneBy({
+      id,
+    });
 
-    if (user === undefined)
-      throw new BadRequestException({
-        statusCode: 404,
-        message: 'bad request',
-      });
+    if (!userFounded)
+      throw new BadRequestException(
+        `No se encontro un usuario con el uuid ${id}`,
+      );
 
-    return user;
+    return userFounded;
   }
 
   async createUser(user: Omit<IUser, 'id'>): Promise<IUser> {

@@ -3,6 +3,7 @@ import { UsersRepository } from './users.repository';
 import IUser from 'src/modules/users/interface/user.interface';
 import { AuthService } from '../auth/auth.service';
 import { UpdateUserDto } from './dto/updateUser.dto';
+import { EUser } from '../../entities/users.entity';
 
 @Injectable()
 export class UsersService {
@@ -15,7 +16,7 @@ export class UsersService {
     return await this.usersRepository.getUsers();
   }
 
-  async getUserById(id: number): Promise<IUser> {
+  async getUserById(id: string): Promise<EUser> {
     return await this.usersRepository.getUserById(id);
   }
 

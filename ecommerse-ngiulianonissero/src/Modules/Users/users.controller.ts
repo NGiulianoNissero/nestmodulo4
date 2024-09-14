@@ -14,6 +14,7 @@ import IUser from 'src/modules/users/interface/user.interface';
 import { AuthGuard } from 'src/guards/AuthGuard';
 import { CreateUserDto } from './dto/createUser.dto';
 import { UpdateUserDto } from './dto/updateUser.dto';
+import { EUser } from '../../entities/users.entity';
 
 @Controller('users')
 export class UsersController {
@@ -29,8 +30,8 @@ export class UsersController {
   @HttpCode(200)
   @UseGuards(AuthGuard)
   @Get(':id')
-  async getUserById(@Param('id') id: string): Promise<IUser> {
-    return await this.usersService.getUserById(Number(id));
+  async getUserById(@Param('id') id: string): Promise<EUser> {
+    return await this.usersService.getUserById(id);
   }
 
   @HttpCode(201)
