@@ -4,6 +4,7 @@ import { UpdateUserDto } from './dto/updateUser.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EUser } from '../../entities/users.entity';
 import { Repository } from 'typeorm';
+import { userInfo } from 'os';
 
 @Injectable()
 export class UsersRepository {
@@ -54,8 +55,8 @@ export class UsersRepository {
     },
   ];
 
-  async getUsers(): Promise<IUser[]> {
-    return await this.users;
+  async getUsers(): Promise<EUser[]> {
+    return await this.userRepository.find();
   }
 
   async getUserById(id: string): Promise<EUser> {
@@ -71,30 +72,37 @@ export class UsersRepository {
     return userFounded;
   }
 
-  async createUser(user: Omit<IUser, 'id'>): Promise<IUser> {
-    const id = this.users.length + 1;
-    await this.users.push({ id, ...user });
-    return { id, ...user };
+  async createUser(user: EUser): Promise<EUser> {
+    const newUser: EUser = await this.userRepository.create(user);
+    await this.userRepository.save(newUser);
+    return newUser;
   }
 
-  async updateUser(body: UpdateUserDto, id: number): Promise<IUser> {
-    const userIndex = this.users.findIndex((user) => user.id === id);
-    if (userIndex === -1)
-      throw new BadRequestException('No se encontro un usuario con ese id');
-
-    return (this.users[userIndex] = {
-      ...this.users[userIndex],
-      ...body,
+  async updateUser(body: UpdateUserDto, id: string): Promise<EUser> {
+    const user: EUser | null = await this.userRepository.findOne({
+      where: { id },
     });
+
+    if (!user) {
+      throw new BadRequestException('No se encontró un usuario con ese id');
+    }
+
+    const updatedUser = {
+      ...user,
+      ...body,
+    };
+
+    return await this.userRepository.save(updatedUser);
   }
 
-  async deleteUser(id: number): Promise<IUser> {
-    const user = this.users.find((user) => user.id === id);
+  async deleteUser(id: string): Promise<EUser> {
+    const user: EUser | null = await this.userRepository.findOneBy({ id });
 
-    if (!user) throw new BadRequestException('Usuario no encontrado');
+    if (!user)
+      throw new BadRequestException(`No existe un usuario con el uuid ${id}`);
 
-    const newUsers = this.users.filter((user) => user.id !== id);
-    this.users = newUsers;
+    await this.userRepository.delete({ id });
+
     return user;
   }
 }

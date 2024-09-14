@@ -11,7 +11,7 @@ import { EOrder } from './orders.entity';
 @Entity({ name: 'users' })
 export class EUser {
   @PrimaryGeneratedColumn('uuid')
-  id: string = uuid();
+  id?: string = uuid();
 
   @Column({ length: 50, nullable: false })
   name: string;
@@ -22,7 +22,7 @@ export class EUser {
   @Column({ length: 20, nullable: false })
   password: string;
 
-  @Column()
+  @Column({ type: 'bigint' })
   phone: number;
 
   @Column({ length: 50 })
@@ -35,5 +35,5 @@ export class EUser {
   city?: string;
 
   @OneToMany(() => EOrder, (order) => order.user)
-  orders: EOrder[];
+  orders?: EOrder[];
 }

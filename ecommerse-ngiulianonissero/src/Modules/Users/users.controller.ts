@@ -10,8 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import IUser from 'src/modules/users/interface/user.interface';
-import { AuthGuard } from 'src/guards/AuthGuard';
+import { AuthGuard } from '../../guards/AuthGuard';
 import { CreateUserDto } from './dto/createUser.dto';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import { EUser } from '../../entities/users.entity';
@@ -23,7 +22,7 @@ export class UsersController {
   @HttpCode(200)
   @UseGuards(AuthGuard)
   @Get()
-  async getUsers(): Promise<IUser[]> {
+  async getUsers(): Promise<EUser[]> {
     return await this.usersService.getUsers();
   }
 
@@ -37,20 +36,21 @@ export class UsersController {
   @HttpCode(201)
   @Post()
   async createUser(@Body() user: CreateUserDto) {
-    return await this.usersService.createUser(user);
+    const userData: EUser = { ...user };
+    return await this.usersService.createUser(userData);
   }
 
   @HttpCode(200)
   @UseGuards(AuthGuard)
-  @Put(':id')
-  async updateUser(@Param('id') id: string, @Body() body: UpdateUserDto) {
-    return await this.usersService.updateUser(body, Number(id));
+  @Put(':uuid')
+  async updateUser(@Param('uuid') id: string, @Body() body: UpdateUserDto) {
+    return await this.usersService.updateUser(body, id);
   }
 
   @HttpCode(200)
   @UseGuards(AuthGuard)
-  @Delete(':id')
-  async deleteUser(@Param('id') id: string) {
-    return await this.usersService.deleteUser(Number(id));
+  @Delete(':uuid')
+  async deleteUser(@Param('uuid') id: string) {
+    return await this.usersService.deleteUser(id);
   }
 }
