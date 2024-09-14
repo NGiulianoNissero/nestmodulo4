@@ -3,6 +3,7 @@ import {
   Entity,
   JoinTable,
   ManyToMany,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -31,8 +32,8 @@ export class EProduct {
   imgUrl?: string =
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmiqR_gB1aE6SmGpJvgdi6j6MZYtLpcSittA&s';
 
-  @OneToMany(() => ECategory, (category) => category.product)
-  category: ECategory[];
+  @ManyToOne(() => ECategory, (category) => category.products)
+  category: ECategory;
 
   @ManyToMany(() => EOrderDetails, (orderdetails) => orderdetails.product)
   @JoinTable()

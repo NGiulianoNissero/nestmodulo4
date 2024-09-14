@@ -16,28 +16,47 @@ export class OrderDetailsRepository {
   ) {}
 
   async createOrderDetails(
-    productId: CreateOrderDetailsDto,
+    products: CreateOrderDetailsDto[],
     order: EOrder,
   ): Promise<EOrderDetails> {
-    const { id } = productId;
-    const productFounded: EProduct | null =
-      await this.productsService.getProductById(id);
+    let totalPrice: number = 0;
+    const productList: EProduct[] = [];
 
-    if (!productFounded)
-      throw new BadRequestException(
-        `No se encontro un producto con el uuid ${id}`,
+    for (const product of products) {
+      const { id } = product;
+      const productFounded: EProduct | null =
+        await this.productsService.getProductById(id);
+
+      if (!productFounded)
+        throw new BadRequestException(
+          `No se encontro un producto con el uuid ${id}.`,
+        );
+
+      if (productFounded.stock <= 0)
+        throw new BadRequestException(
+          `El producto con el uuid ${id} no tiene mas stock.`,
+        );
+
+      productFounded.stock--;
+      await this.productsService.updateProduct(
+        { stock: productFounded.stock-- },
+        id,
       );
 
-    const { price } = productFounded;
+      productList.push(productFounded);
+      totalPrice += productFounded.price;
+    }
 
     const newOrderDetailsData: EOrderDetails = {
-      price,
+      price: totalPrice,
       order,
-      product: [productFounded],
+      product: productList,
     };
 
     const newOrderDetails: EOrderDetails =
       await this.orderDetailsRepository.create(newOrderDetailsData);
+
+    await this.orderDetailsRepository.save(newOrderDetails);
 
     if (!newOrderDetails)
       throw new BadRequestException(

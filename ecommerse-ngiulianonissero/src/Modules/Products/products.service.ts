@@ -35,7 +35,7 @@ export class ProductsService {
       const newProduct: EProduct = await this.productsRepository.createProduct(
         {
           ...body,
-          category: [newCategory],
+          category: newCategory,
         },
         queryRunner,
       );

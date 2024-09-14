@@ -7,9 +7,9 @@ import { EOrder } from '../../entities/orders.entity';
 export class OrderDetailsService {
   constructor(private orderDetailsRepository: OrderDetailsRepository) {}
 
-  async createOrderDetails(productId: CreateOrderDetailsDto, order: EOrder) {
+  async createOrderDetails(products: CreateOrderDetailsDto[], order: EOrder) {
     return await this.orderDetailsRepository.createOrderDetails(
-      productId,
+      products,
       order,
     );
   }

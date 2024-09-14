@@ -194,7 +194,7 @@ export class ProductsRepository {
             description,
             price,
             stock,
-            category: [category],
+            category: category,
           };
           const newProduct: EProduct = await queryRunner.manager.create(
             EProduct,

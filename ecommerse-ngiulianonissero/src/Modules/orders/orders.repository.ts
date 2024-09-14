@@ -17,7 +17,10 @@ export class OrdersRepository {
   ) {}
 
   async getOrder(id: string): Promise<EOrder> {
-    const order: EOrder | null = await this.ordersRepository.findOneBy({ id });
+    const order: EOrder | null = await this.ordersRepository.findOne({
+      where: { id },
+      relations: ['orderDetails', 'orderDetails.products'],
+    });
 
     if (!order)
       throw new BadRequestException(
@@ -37,18 +40,12 @@ export class OrdersRepository {
       user: userFounded,
     };
 
-    for await (const productId of products) {
-      const newOrderDetails: EOrderDetails =
-        await this.orderDetailsService.createOrderDetails(
-          productId,
-          newOrderData,
-        );
+    const newOrderDetails: EOrderDetails =
+      await this.orderDetailsService.createOrderDetails(products, newOrderData);
 
-      newOrderData.orderDetails = newOrderDetails;
-    }
+    newOrderData.orderDetails = newOrderDetails;
 
     const newOrder: EOrder = await this.ordersRepository.create(newOrderData);
-
     await this.ordersRepository.save(newOrder);
 
     return newOrder;
