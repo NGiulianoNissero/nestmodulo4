@@ -1,4 +1,6 @@
-import 'dotenv/config';
+import { config as dotenvConfig } from 'dotenv';
+
+dotenvConfig({ path: '.development.env' });
 
 export const DB_DATABASE = process.env.DB_DATABASE;
 export const DB_PORT = Number(process.env.DB_PORT);

@@ -13,6 +13,7 @@ const typeOrmConfig = {
   synchronize: true,
   dropSchema: true,
   entities: ['dist/**/*.entity{.ts,.js}'],
+  migrations: ['dist/migrations/*{.js,.ts}'],
 };
 
 export default registerAs('typeorm', () => typeOrmConfig);
