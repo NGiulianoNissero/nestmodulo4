@@ -4,7 +4,7 @@ import { UpdateUserDto } from './dto/updateUser.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EUser } from '../../entities/users.entity';
 import { Repository } from 'typeorm';
-import { userInfo } from 'os';
+import { isUUID } from 'class-validator';
 
 @Injectable()
 export class UsersRepository {
@@ -60,9 +60,19 @@ export class UsersRepository {
   }
 
   async getUserById(id: string): Promise<EUser> {
-    const userFounded: EUser | null = await this.userRepository.findOneBy({
-      id,
-    });
+    if (!isUUID(id))
+      throw new BadRequestException(`El uuid ${id} no es un uuid valido.`);
+
+    // const userFounded: EUser | null = await this.userRepository.findOne({where:{
+    //   id,
+    // }, relations:['orders']});
+
+    const userFounded = await this.userRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.orders', 'order')
+      .select(['user.id', 'user.name', 'order.id', 'order.date'])
+      .where('user.id = :id', { id })
+      .getOne();
 
     if (!userFounded)
       throw new BadRequestException(

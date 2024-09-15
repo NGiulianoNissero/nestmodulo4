@@ -7,6 +7,7 @@ import { UsersService } from '../users/users.service';
 import { EUser } from '../../entities/users.entity';
 import { EOrderDetails } from '../../entities/orderDetails.entity';
 import { OrderDetailsService } from '../orderDetails/orderDetails.service';
+import { isUUID } from 'class-validator';
 
 @Injectable()
 export class OrdersRepository {
@@ -17,9 +18,12 @@ export class OrdersRepository {
   ) {}
 
   async getOrder(id: string): Promise<EOrder> {
+    if (!isUUID(id))
+      throw new BadRequestException(`El uuid ${id} no es un uuid valido.`);
+
     const order: EOrder | null = await this.ordersRepository.findOne({
       where: { id },
-      relations: ['orderDetails', 'orderDetails.products'],
+      relations: ['orderDetails'],
     });
 
     if (!order)

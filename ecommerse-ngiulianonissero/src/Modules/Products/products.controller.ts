@@ -29,9 +29,9 @@ export class ProductsController {
     return await this.productsService.getProducts(Number(page), Number(limit));
   }
 
-  @Get(':id')
+  @Get(':uuid')
   @HttpCode(200)
-  async getProductById(@Param('id') id: string): Promise<EProduct> {
+  async getProductById(@Param('uuid') id: string): Promise<EProduct> {
     return await this.productsService.getProductById(id);
   }
 
@@ -42,17 +42,20 @@ export class ProductsController {
     return await this.productsService.createProduct(body);
   }
 
-  @Put(':id')
+  @Put(':uuid')
   @UseGuards(AuthGuard)
   @HttpCode(200)
-  async updateProduct(@Param('id') id: string, @Body() body: UpdateProductDto) {
+  async updateProduct(
+    @Param('uuid') id: string,
+    @Body() body: UpdateProductDto,
+  ) {
     return await this.productsService.updateProduct(body, id);
   }
 
-  @Delete(':id')
+  @Delete(':uuid')
   @UseGuards(AuthGuard)
   @HttpCode(200)
-  async deleteProduct(@Param('id') id: string) {
+  async deleteProduct(@Param('uuid') id: string) {
     return await this.productsService.deleteProduct(id);
   }
 

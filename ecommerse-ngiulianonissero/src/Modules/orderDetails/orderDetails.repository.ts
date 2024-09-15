@@ -44,13 +44,24 @@ export class OrderDetailsRepository {
       );
 
       productList.push(productFounded);
-      totalPrice += productFounded.price;
+
+      const productPrice: number = Number(productFounded.price);
+
+      if (isNaN(productPrice))
+        throw new BadRequestException(
+          `El precio del producto ${id} no es valido.`,
+        );
+
+      totalPrice += productPrice;
     }
+
+    if (isNaN(totalPrice))
+      throw new BadRequestException('El precio total no es valido.');
 
     const newOrderDetailsData: EOrderDetails = {
       price: totalPrice,
       order,
-      product: productList,
+      products: productList,
     };
 
     const newOrderDetails: EOrderDetails =

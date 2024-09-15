@@ -8,6 +8,7 @@ import { CategoriesService } from '../categories/categories.service';
 import { ECategory } from '../../entities/categories.entity';
 import { CreateCategoryDto } from '../categories/dto/createCategory.dto';
 import e from 'express';
+import { isUUID } from 'class-validator';
 
 @Injectable()
 export class ProductsRepository {
@@ -128,6 +129,9 @@ export class ProductsRepository {
   }
 
   async getProductById(id: string): Promise<EProduct> {
+    if (!isUUID(id))
+      throw new BadRequestException(`El uuid ${id} no es un uuid valido.`);
+
     const productById: EProduct | null = await this.productRepository.findOneBy(
       { id },
     );

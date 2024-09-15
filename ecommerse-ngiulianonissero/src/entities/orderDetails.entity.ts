@@ -21,5 +21,5 @@ export class EOrderDetails {
   order: EOrder;
 
   @ManyToMany(() => EProduct, (product) => product.orderDetails)
-  product: EProduct[];
+  products: EProduct[];
 }
