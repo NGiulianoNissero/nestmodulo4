@@ -30,7 +30,7 @@ export class EProduct {
 
   @Column()
   imgUrl?: string =
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmiqR_gB1aE6SmGpJvgdi6j6MZYtLpcSittA&s';
+    'https://res.cloudinary.com/dnfslkgiv/image/upload/v1726516516/muft4cnobocgkvbgj215.png';
 
   @ManyToOne(() => ECategory, (category) => category.products)
   category: ECategory;

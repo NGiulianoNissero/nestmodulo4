@@ -8,6 +8,7 @@ import typeOrmConfig from './config/typeorm.config';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { OrdersModule } from './modules/orders/orders.module';
 import { OrderDetailsModule } from './modules/orderDetails/orderDetails.module';
+import { FilesManagerModule } from './modules/filesManager/filesManager.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { OrderDetailsModule } from './modules/orderDetails/orderDetails.module';
     CategoriesModule,
     OrdersModule,
     OrderDetailsModule,
+    FilesManagerModule,
   ],
 })
 export class AppModule {}

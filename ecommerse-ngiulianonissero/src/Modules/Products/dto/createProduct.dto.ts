@@ -24,11 +24,6 @@ export class CreateProductDto {
   @IsNumber()
   stock: number;
 
-  @IsOptional()
-  @IsString()
-  @IsUrl()
-  imgUrl: string;
-
   @IsNotEmpty()
   @IsString()
   category: string;

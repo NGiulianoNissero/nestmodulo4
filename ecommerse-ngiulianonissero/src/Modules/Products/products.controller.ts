@@ -9,6 +9,7 @@ import {
   Post,
   Put,
   Query,
+  UploadedFile,
   UseGuards,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
@@ -16,6 +17,8 @@ import { UpdateProductDto } from './dto/updateProduct.dto';
 import { AuthGuard } from '../../guards/AuthGuard';
 import { CreateProductDto } from './dto/createProduct.dto';
 import { EProduct } from '../../entities/products.entity';
+import { UseInterceptors } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('products')
 export class ProductsController {
