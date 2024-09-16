@@ -5,6 +5,7 @@ import {
   Get,
   HttpCode,
   Param,
+  ParseUUIDPipe,
   Post,
   Put,
   Query,
@@ -46,7 +47,7 @@ export class ProductsController {
   @UseGuards(AuthGuard)
   @HttpCode(200)
   async updateProduct(
-    @Param('uuid') id: string,
+    @Param('uuid', new ParseUUIDPipe()) id: string,
     @Body() body: UpdateProductDto,
   ) {
     return await this.productsService.updateProduct(body, id);
@@ -55,7 +56,7 @@ export class ProductsController {
   @Delete(':uuid')
   @UseGuards(AuthGuard)
   @HttpCode(200)
-  async deleteProduct(@Param('uuid') id: string) {
+  async deleteProduct(@Param('uuid', new ParseUUIDPipe()) id: string) {
     return await this.productsService.deleteProduct(id);
   }
 

@@ -1,4 +1,11 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseUUIDPipe,
+  Post,
+} from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { AddOrderBodyDto } from './dto/addOrderBody.dto';
 import { AddOrderDto } from './dto/addOrder.dto';
@@ -8,7 +15,7 @@ export class OrdersController {
   constructor(private ordersService: OrdersService) {}
 
   @Get(':uuid')
-  async getOrder(@Param('uuid') id: string) {
+  async getOrder(@Param('uuid', new ParseUUIDPipe()) id: string) {
     return await this.ordersService.getOrder(id);
   }
 

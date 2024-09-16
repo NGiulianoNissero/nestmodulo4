@@ -5,6 +5,7 @@ import {
   Get,
   HttpCode,
   Param,
+  ParseUUIDPipe,
   Post,
   Put,
   UseGuards,
@@ -28,8 +29,10 @@ export class UsersController {
 
   @HttpCode(200)
   @UseGuards(AuthGuard)
-  @Get(':id')
-  async getUserById(@Param('id') id: string): Promise<EUser> {
+  @Get(':uuid')
+  async getUserById(
+    @Param('uuid', new ParseUUIDPipe()) id: string,
+  ): Promise<EUser> {
     return await this.usersService.getUserById(id);
   }
 
@@ -43,14 +46,17 @@ export class UsersController {
   @HttpCode(200)
   @UseGuards(AuthGuard)
   @Put(':uuid')
-  async updateUser(@Param('uuid') id: string, @Body() body: UpdateUserDto) {
+  async updateUser(
+    @Param('uuid', new ParseUUIDPipe()) id: string,
+    @Body() body: UpdateUserDto,
+  ) {
     return await this.usersService.updateUser(body, id);
   }
 
   @HttpCode(200)
   @UseGuards(AuthGuard)
   @Delete(':uuid')
-  async deleteUser(@Param('uuid') id: string) {
+  async deleteUser(@Param('uuid', new ParseUUIDPipe()) id: string) {
     return await this.usersService.deleteUser(id);
   }
 }
