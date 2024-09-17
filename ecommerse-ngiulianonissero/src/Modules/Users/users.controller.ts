@@ -6,13 +6,11 @@ import {
   HttpCode,
   Param,
   ParseUUIDPipe,
-  Post,
   Put,
   UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { AuthGuard } from '../../guards/AuthGuard';
-import { CreateUserDto } from './dto/createUser.dto';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import { EUser } from '../../entities/users.entity';
 
@@ -34,13 +32,6 @@ export class UsersController {
     @Param('uuid', new ParseUUIDPipe()) id: string,
   ): Promise<EUser> {
     return await this.usersService.getUserById(id);
-  }
-
-  @HttpCode(201)
-  @Post()
-  async createUser(@Body() user: CreateUserDto) {
-    const userData: EUser = { ...user };
-    return await this.usersService.createUser(userData);
   }
 
   @HttpCode(200)

@@ -13,19 +13,19 @@ export class EUser {
   @Column({ length: 50, nullable: false, unique: true })
   email: string;
 
-  @Column({ length: 20, nullable: false })
+  @Column({ nullable: false })
   password: string;
 
   @Column({ type: 'bigint' })
   phone: number;
 
-  @Column({ length: 50 })
-  country?: string;
-
   @Column()
   address: string;
 
-  @Column({ length: 50 })
+  @Column({ length: 50, nullable: true })
+  country?: string;
+
+  @Column({ length: 50, nullable: true })
   city?: string;
 
   @OneToMany(() => EOrder, (order) => order.user)

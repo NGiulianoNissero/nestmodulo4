@@ -1,13 +1,13 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { LoggerMiddleware } from 'src/middlewares/logger.middleware';
-import { CredentialRepository } from './auth.repository';
+import { LoggerMiddleware } from '../../middlewares/logger.middleware';
+import { UsersModule } from '../users/users.module';
 
 @Module({
+  imports: [UsersModule],
   controllers: [AuthController],
-  providers: [AuthService, CredentialRepository],
-  exports: [AuthService],
+  providers: [AuthService],
 })
 export class AuthModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

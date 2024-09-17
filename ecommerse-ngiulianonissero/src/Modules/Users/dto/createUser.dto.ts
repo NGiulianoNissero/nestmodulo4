@@ -25,6 +25,10 @@ export class CreateUserDto {
   })
   password: string;
 
+  @IsNotEmpty()
+  @IsString()
+  passwordConfirmation: string;
+
   @IsNotEmpty({ message: 'La direccion es requerida.' })
   @IsString({ message: 'La direccion debe ser una cadena de texto.' })
   @Length(3, 80, {

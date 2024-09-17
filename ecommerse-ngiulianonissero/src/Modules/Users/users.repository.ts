@@ -115,4 +115,10 @@ export class UsersRepository {
 
     return user;
   }
+
+  async getUserByEmail(email: string): Promise<EUser | null> {
+    const user: EUser | null = await this.userRepository.findOneBy({ email });
+
+    return user;
+  }
 }
