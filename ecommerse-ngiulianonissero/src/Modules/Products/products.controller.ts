@@ -34,6 +34,7 @@ export class ProductsController {
   }
 
   @Get(':uuid')
+  @UseGuards(AuthGuard)
   @HttpCode(200)
   async getProductById(@Param('uuid') id: string): Promise<EProduct> {
     return await this.productsService.getProductById(id);

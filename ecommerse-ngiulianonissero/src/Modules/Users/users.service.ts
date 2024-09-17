@@ -15,7 +15,7 @@ export class UsersService {
     return await this.usersRepository.getUserById(id);
   }
 
-  async singUp(user: EUser): Promise<EUser> {
+  async signUp(user: EUser): Promise<EUser> {
     return await this.usersRepository.createUser(user);
   }
 

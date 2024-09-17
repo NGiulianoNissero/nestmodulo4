@@ -9,6 +9,8 @@ import { CategoriesModule } from './modules/categories/categories.module';
 import { OrdersModule } from './modules/orders/orders.module';
 import { OrderDetailsModule } from './modules/orderDetails/orderDetails.module';
 import { FilesManagerModule } from './modules/filesManager/filesManager.module';
+import { JwtModule } from '@nestjs/jwt';
+import { JWT_SECRET } from './config/envs';
 
 @Module({
   imports: [
@@ -26,6 +28,11 @@ import { FilesManagerModule } from './modules/filesManager/filesManager.module';
 
         return ormConfig;
       },
+    }),
+    JwtModule.register({
+      global: true,
+      signOptions: { expiresIn: '1h' },
+      secret: JWT_SECRET,
     }),
     AuthModule,
     ProductsModule,
