@@ -78,8 +78,9 @@ export class UsersRepository {
       throw new BadRequestException(
         `No se encontro un usuario con el uuid ${id}`,
       );
+    const { isAdmin, ...userWithoutRole } = userFounded;
 
-    return userFounded;
+    return userWithoutRole;
   }
 
   async createUser(user: EUser): Promise<EUser> {
@@ -102,7 +103,11 @@ export class UsersRepository {
       ...body,
     };
 
-    return await this.userRepository.save(updatedUser);
+    await this.userRepository.save(updatedUser);
+
+    const { isAdmin, ...userWithoutRole } = updatedUser;
+
+    return userWithoutRole;
   }
 
   async deleteUser(id: string): Promise<EUser> {
@@ -113,7 +118,9 @@ export class UsersRepository {
 
     await this.userRepository.delete({ id });
 
-    return user;
+    const { isAdmin, ...userWithoutRole } = user;
+
+    return userWithoutRole;
   }
 
   async getUserByEmail(email: string): Promise<EUser | null> {

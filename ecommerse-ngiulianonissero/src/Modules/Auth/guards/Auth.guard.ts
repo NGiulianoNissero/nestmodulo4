@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Observable } from 'rxjs';
-import { JWT_SECRET } from '../config/envs';
+import { JWT_SECRET } from '../../../config/envs';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -44,6 +44,7 @@ export class AuthGuard implements CanActivate {
 
       payload.iat = new Date(payload.iat * 1000);
       payload.exp = new Date(payload.exp * 1000);
+      // payload.roles = [Role.User];
       request.user = payload;
 
       return true;

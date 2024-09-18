@@ -5,15 +5,16 @@ import {
   Get,
   HttpCode,
   Post,
-  Req,
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginUserDto } from './dto/loginUser.dto';
 import { CreateUserDto } from '../users/dto/createUser.dto';
 import { EUser } from '../../entities/users.entity';
-import { AuthGuard } from '../../guards/AuthGuard';
-import { Request } from 'express';
+import { Roles } from './roles.decorator';
+import { Role } from './roles.enum';
+import { AuthGuard } from './guards/Auth.guard';
+import { RolesGuard } from './guards/Roles.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -28,9 +29,17 @@ export class AuthController {
     return await this.authService.signUp(userData);
   }
 
+  @HttpCode(200)
   @Post('signin')
   async signIn(@Body() body: LoginUserDto) {
     const { email, password } = body;
     return await this.authService.signIn(email, password);
+  }
+
+  @Get('admin')
+  @Roles(Role.Admin)
+  @UseGuards(AuthGuard, RolesGuard)
+  testRoles() {
+    return 'ruta protegida';
   }
 }

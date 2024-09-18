@@ -1,4 +1,5 @@
 import {
+  IsBoolean,
   IsEmail,
   IsNotEmpty,
   IsNumber,
@@ -49,4 +50,8 @@ export class CreateUserDto {
   @IsString({ message: 'La ciudad debe ser una cadena de texto.' })
   @Length(5, 20, { message: 'La ciudad debe tener entre 5 y 20 caracteres.' })
   city: string | undefined;
+
+  @IsOptional()
+  @IsBoolean({ message: 'El rol admin debe ser un booleano.' })
+  isAdmin: boolean;
 }

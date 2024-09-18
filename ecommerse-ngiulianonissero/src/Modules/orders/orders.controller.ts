@@ -10,7 +10,7 @@ import {
 import { OrdersService } from './orders.service';
 import { AddOrderBodyDto } from './dto/addOrderBody.dto';
 import { AddOrderDto } from './dto/addOrder.dto';
-import { AuthGuard } from '../../guards/AuthGuard';
+import { AuthGuard } from '../auth/guards/Auth.guard';
 
 @Controller('orders')
 export class OrdersController {

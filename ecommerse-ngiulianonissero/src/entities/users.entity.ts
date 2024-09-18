@@ -22,6 +22,9 @@ export class EUser {
   @Column()
   address: string;
 
+  @Column({ default: false })
+  isAdmin?: boolean;
+
   @Column({ length: 50, nullable: true })
   country?: string;
 

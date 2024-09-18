@@ -14,11 +14,14 @@ import {
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { UpdateProductDto } from './dto/updateProduct.dto';
-import { AuthGuard } from '../../guards/AuthGuard';
+import { AuthGuard } from '../auth/guards/Auth.guard';
 import { CreateProductDto } from './dto/createProduct.dto';
 import { EProduct } from '../../entities/products.entity';
 import { UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { Roles } from '../auth/roles.decorator';
+import { Role } from '../auth/roles.enum';
+import { RolesGuard } from '../auth/guards/Roles.guard';
 
 @Controller('products')
 export class ProductsController {
@@ -48,7 +51,8 @@ export class ProductsController {
   }
 
   @Put(':uuid')
-  @UseGuards(AuthGuard)
+  @Roles(Role.Admin)
+  @UseGuards(AuthGuard, RolesGuard)
   @HttpCode(200)
   async updateProduct(
     @Param('uuid', new ParseUUIDPipe()) id: string,

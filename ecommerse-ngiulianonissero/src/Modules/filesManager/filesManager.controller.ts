@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { FilesManagerService } from './filesManager.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { AuthGuard } from '../../guards/AuthGuard';
+import { AuthGuard } from '../auth/guards/Auth.guard';
 
 @Controller('files')
 export class FilesManagerController {

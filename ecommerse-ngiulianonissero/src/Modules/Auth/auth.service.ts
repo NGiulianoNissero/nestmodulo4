@@ -3,6 +3,7 @@ import { EUser } from '../../entities/users.entity';
 import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { Role } from './roles.enum';
 
 @Injectable()
 export class AuthService {
@@ -31,9 +32,9 @@ export class AuthService {
       password: hasdedPassword,
     });
 
-    const { password, ...userWithoutPassword } = newUser;
+    const { password, isAdmin, ...userWithoutPasswordAndWithoutRole } = newUser;
 
-    return userWithoutPassword;
+    return userWithoutPasswordAndWithoutRole;
   }
 
   async signIn(email: string, password: string) {
@@ -54,6 +55,7 @@ export class AuthService {
       sub: dbUser.id,
       id: dbUser.id,
       email: dbUser.email,
+      roles: [dbUser.isAdmin ? Role.Admin : Role.User],
     };
 
     const token = this.jwtService.sign(userPayload);
