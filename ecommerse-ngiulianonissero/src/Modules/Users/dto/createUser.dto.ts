@@ -44,14 +44,14 @@ export class CreateUserDto {
   @IsOptional()
   @IsString({ message: 'El pais debe ser una cadena de texto.' })
   @Length(5, 20, { message: 'El país debe tener entre 5 y 20 caracteres.' })
-  country: string | undefined;
+  country?: string | undefined;
 
   @IsOptional()
   @IsString({ message: 'La ciudad debe ser una cadena de texto.' })
   @Length(5, 20, { message: 'La ciudad debe tener entre 5 y 20 caracteres.' })
-  city: string | undefined;
+  city?: string | undefined;
 
   @IsOptional()
   @IsBoolean({ message: 'El rol admin debe ser un booleano.' })
-  isAdmin: boolean;
+  isAdmin?: boolean;
 }

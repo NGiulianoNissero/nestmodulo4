@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ECategory } from '../../entities/categories.entity';
 import { QueryRunner, Repository } from 'typeorm';
 import products from '../../helpers/preloadProducts';
-import { EProduct } from '../../entities/products.entity';
 
 @Injectable()
 export class CategoriesRepository {

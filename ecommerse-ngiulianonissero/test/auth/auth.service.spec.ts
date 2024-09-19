@@ -6,7 +6,7 @@ import { EUser } from '../../src/entities/users.entity';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 
-describe('testeando auth service', () => {
+describe('AuthService', () => {
   let authService: AuthService;
   let mockUsersService: Partial<UsersService>;
 
