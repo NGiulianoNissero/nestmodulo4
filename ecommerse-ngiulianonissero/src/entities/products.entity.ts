@@ -33,7 +33,7 @@ export class EProduct {
     'https://res.cloudinary.com/dnfslkgiv/image/upload/v1726516516/muft4cnobocgkvbgj215.png';
 
   @ManyToOne(() => ECategory, (category) => category.products)
-  category: ECategory;
+  category?: ECategory;
 
   @ManyToMany(() => EOrderDetails, (orderdetails) => orderdetails.products)
   @JoinTable()
