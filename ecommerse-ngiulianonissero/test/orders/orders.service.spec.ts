@@ -45,6 +45,10 @@ describe('OrdersService', () => {
     ordersService = module.get<OrdersService>(OrdersService);
   });
 
+  it('El servicio de ordenes debe estar definio.', async () => {
+    expect(ordersService).toBeDefined();
+  });
+
   it('getOrder() debe retornar una orden cuando el id es valido.', async () => {
     const result = await ordersService.getOrder('order-1');
 

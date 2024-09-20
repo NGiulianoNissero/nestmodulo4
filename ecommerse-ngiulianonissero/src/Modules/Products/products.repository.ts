@@ -6,8 +6,6 @@ import { UpdateProductDto } from './dto/updateProduct.dto';
 import products from '../../helpers/preloadProducts';
 import { CategoriesService } from '../categories/categories.service';
 import { ECategory } from '../../entities/categories.entity';
-import { CreateCategoryDto } from '../categories/dto/createCategory.dto';
-import e from 'express';
 import { isUUID } from 'class-validator';
 
 @Injectable()
