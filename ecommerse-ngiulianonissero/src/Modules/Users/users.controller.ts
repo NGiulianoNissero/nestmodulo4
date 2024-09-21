@@ -16,11 +16,14 @@ import { EUser } from '../../entities/users.entity';
 import { Roles } from '../auth/roles.decorator';
 import { Role } from '../auth/roles.enum';
 import { RolesGuard } from '../auth/guards/Roles.guard';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Users')
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @ApiBearerAuth()
   @HttpCode(200)
   @Roles(Role.Admin)
   @UseGuards(AuthGuard, RolesGuard)
@@ -29,6 +32,7 @@ export class UsersController {
     return await this.usersService.getUsers();
   }
 
+  @ApiBearerAuth()
   @HttpCode(200)
   @UseGuards(AuthGuard)
   @Get(':uuid')
@@ -38,6 +42,7 @@ export class UsersController {
     return await this.usersService.getUserById(id);
   }
 
+  @ApiBearerAuth()
   @HttpCode(200)
   @UseGuards(AuthGuard)
   @Put(':uuid')
@@ -48,6 +53,7 @@ export class UsersController {
     return await this.usersService.updateUser(body, id);
   }
 
+  @ApiBearerAuth()
   @HttpCode(200)
   @UseGuards(AuthGuard)
   @Delete(':uuid')

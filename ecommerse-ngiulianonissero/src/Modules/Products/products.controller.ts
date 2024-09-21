@@ -9,7 +9,6 @@ import {
   Post,
   Put,
   Query,
-  UploadedFile,
   UseGuards,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
@@ -17,12 +16,12 @@ import { UpdateProductDto } from './dto/updateProduct.dto';
 import { AuthGuard } from '../auth/guards/Auth.guard';
 import { CreateProductDto } from './dto/createProduct.dto';
 import { EProduct } from '../../entities/products.entity';
-import { UseInterceptors } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
 import { Roles } from '../auth/roles.decorator';
 import { Role } from '../auth/roles.enum';
 import { RolesGuard } from '../auth/guards/Roles.guard';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Products')
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
@@ -36,6 +35,7 @@ export class ProductsController {
     return await this.productsService.getProducts(Number(page), Number(limit));
   }
 
+  @ApiBearerAuth()
   @Get(':uuid')
   @UseGuards(AuthGuard)
   @HttpCode(200)
@@ -43,6 +43,7 @@ export class ProductsController {
     return await this.productsService.getProductById(id);
   }
 
+  @ApiBearerAuth()
   @Post()
   @UseGuards(AuthGuard)
   @HttpCode(201)
@@ -50,6 +51,7 @@ export class ProductsController {
     return await this.productsService.createProduct(body);
   }
 
+  @ApiBearerAuth()
   @Put(':uuid')
   @Roles(Role.Admin)
   @UseGuards(AuthGuard, RolesGuard)
@@ -61,6 +63,7 @@ export class ProductsController {
     return await this.productsService.updateProduct(body, id);
   }
 
+  @ApiBearerAuth()
   @Delete(':uuid')
   @UseGuards(AuthGuard)
   @HttpCode(200)
