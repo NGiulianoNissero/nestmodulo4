@@ -28,6 +28,6 @@ jobs:
         context: ./ecommerse-ngiulianonissero
         file: ./ecommerse-ngiulianonissero/Dockerfile
         push: true
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/nestmodulo4:latests
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/nestmodulo4:latest
         
       
