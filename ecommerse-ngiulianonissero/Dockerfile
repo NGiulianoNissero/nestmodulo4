@@ -1,6 +1,6 @@
 FROM node:18
 
-WORKDIR /ecommerse-ngiulianonissero
+WORKDIR /app/ecommerse-ngiulianonissero
 
 COPY package*.json ./
 
@@ -8,6 +8,6 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 3000
+EXPOSE 3005
 
 CMD [ "npm","run","start" ]

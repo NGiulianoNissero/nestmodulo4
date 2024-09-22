@@ -4,7 +4,7 @@ services:
   nestapp:
     build: NGiulianoNissero/nestmodulo4:latest
     ports:
-      - "3001:3000"
+      - "3001:3005"
     env_file:
       - .development.env
     depends_on:
