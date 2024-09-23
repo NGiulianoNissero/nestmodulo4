@@ -1,0 +1,9 @@
+export declare const DB_DATABASE: string;
+export declare const DB_PORT: number;
+export declare const DB_HOST: string;
+export declare const DB_USER: string;
+export declare const DB_PASS: string;
+export declare const CLOUDINARY_CLOUD_NAME: string;
+export declare const CLOUDINARY_API_KEY: string;
+export declare const CLOUDINARY_API_SECRET: string;
+export declare const JWT_SECRET: string;
