@@ -13,6 +13,7 @@ const typeOrmConfig = {
     database: envs_1.DB_DATABASE,
     autoLoadEntities: true,
     synchronize: true,
+    dropSchema: true,
     entities: ['dist/**/*.entity{.ts,.js}'],
     migrations: ['dist/migrations/*{.js,.ts}'],
 };

@@ -48,7 +48,20 @@ let ProductsController = class ProductsController {
 };
 exports.ProductsController = ProductsController;
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Obtener productos' }),
     (0, common_1.Get)(),
+    (0, swagger_1.ApiQuery)({
+        name: 'page',
+        required: false,
+        type: Number,
+        description: 'Pagina de los productos',
+    }),
+    (0, swagger_1.ApiQuery)({
+        name: 'limit',
+        required: false,
+        type: Number,
+        description: 'Limite de los productos',
+    }),
     (0, common_1.HttpCode)(200),
     openapi.ApiResponse({ status: 200, type: [require("../../entities/products.entity").EProduct] }),
     __param(0, (0, common_1.Query)('page')),
@@ -58,17 +71,19 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ProductsController.prototype, "getProducts", null);
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Obtener un producto por id' }),
     (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.Get)(':uuid'),
     (0, common_1.UseGuards)(Auth_guard_1.AuthGuard),
     (0, common_1.HttpCode)(200),
     openapi.ApiResponse({ status: 200, type: require("../../entities/products.entity").EProduct }),
-    __param(0, (0, common_1.Param)('uuid')),
+    __param(0, (0, common_1.Param)('uuid', new common_1.ParseUUIDPipe())),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], ProductsController.prototype, "getProductById", null);
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Crear un producto' }),
     (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.Post)(),
     (0, common_1.UseGuards)(Auth_guard_1.AuthGuard),
@@ -80,12 +95,13 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ProductsController.prototype, "createProduct", null);
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Actualizar un producto' }),
     (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.Put)(':uuid'),
     (0, roles_decorator_1.Roles)(roles_enum_1.Role.Admin),
     (0, common_1.UseGuards)(Auth_guard_1.AuthGuard, Roles_guard_1.RolesGuard),
     (0, common_1.HttpCode)(200),
-    openapi.ApiResponse({ status: 200 }),
+    openapi.ApiResponse({ status: 200, type: require("../../entities/products.entity").EProduct }),
     __param(0, (0, common_1.Param)('uuid', new common_1.ParseUUIDPipe())),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -93,17 +109,19 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ProductsController.prototype, "updateProduct", null);
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Eliminar un producto' }),
     (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.Delete)(':uuid'),
     (0, common_1.UseGuards)(Auth_guard_1.AuthGuard),
     (0, common_1.HttpCode)(200),
-    openapi.ApiResponse({ status: 200 }),
+    openapi.ApiResponse({ status: 200, type: require("../../entities/products.entity").EProduct }),
     __param(0, (0, common_1.Param)('uuid', new common_1.ParseUUIDPipe())),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], ProductsController.prototype, "deleteProduct", null);
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Cargar productos' }),
     (0, common_1.Post)('seeder'),
     openapi.ApiResponse({ status: 201, type: [require("../../entities/products.entity").EProduct] }),
     __metadata("design:type", Function),

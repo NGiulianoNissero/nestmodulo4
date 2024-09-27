@@ -9,13 +9,14 @@ import { AuthService } from './auth.service';
 import { LoginUserDto } from './dto/loginUser.dto';
 import { CreateUserDto } from '../users/dto/createUser.dto';
 import { EUser } from '../../entities/users.entity';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @ApiOperation({ summary: 'Registrar un usuario' })
   @HttpCode(201)
   @Post('signup')
   async signUp(@Body() user: CreateUserDto) {
@@ -25,6 +26,7 @@ export class AuthController {
     return await this.authService.signUp(userData);
   }
 
+  @ApiOperation({ summary: 'Autenticar un usuario' })
   @HttpCode(200)
   @Post('signin')
   async signIn(@Body() body: LoginUserDto) {

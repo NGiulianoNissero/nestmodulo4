@@ -127,16 +127,13 @@ export class ProductsRepository {
   }
 
   async getProductById(id: string): Promise<EProduct> {
-    if (!isUUID(id))
-      throw new BadRequestException(`El uuid ${id} no es un uuid valido.`);
-
     const productById: EProduct | null = await this.productRepository.findOneBy(
       { id },
     );
 
     if (!productById)
       throw new BadRequestException(
-        'No existe un producto con el id proporcionado.',
+        `No se encontro un producto con el uuid ${id}`,
       );
 
     return productById;
@@ -161,17 +158,34 @@ export class ProductsRepository {
     return newProduct;
   }
 
-  async updateProduct(body: UpdateProductDto, id: string): Promise<void> {
-    const updatedProduct = await this.productRepository.update({ id }, body);
+  async updateProduct(body: UpdateProductDto, id: string): Promise<EProduct> {
+    const productFounded: EProduct | null =
+      await this.productRepository.findOneBy({ id });
 
-    if (updatedProduct.affected === 0)
+    if (!productFounded)
       throw new BadRequestException(
-        'No se encontro un producto con el uuid proporcionado.',
+        `No se encontro un producto con el uuid ${id}`,
       );
+
+    const updatedProduct: EProduct = {
+      ...productFounded,
+      ...body,
+    };
+
+    await this.productRepository.save(updatedProduct);
+
+    return updatedProduct;
   }
 
-  async deleteProduct(id: string): Promise<void> {
+  async deleteProduct(id: string): Promise<EProduct> {
+    const productFounded: EProduct | null =
+      await this.productRepository.findOneBy({ id });
+    if (!productFounded)
+      throw new BadRequestException(
+        `No se encontro un producto con el uuid ${id}`,
+      );
     await this.productRepository.delete({ id });
+    return productFounded;
   }
 
   async preloadProducts(): Promise<EProduct[]> {
@@ -196,7 +210,7 @@ export class ProductsRepository {
             description,
             price,
             stock,
-            category: category,
+            category,
           };
           const newProduct: EProduct = await queryRunner.manager.create(
             EProduct,

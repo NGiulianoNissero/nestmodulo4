@@ -41,6 +41,7 @@ let UsersController = class UsersController {
 };
 exports.UsersController = UsersController;
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Obtener usuarios' }),
     (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.HttpCode)(200),
     (0, roles_decorator_1.Roles)(roles_enum_1.Role.Admin),
@@ -52,6 +53,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getUsers", null);
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Obtener usuario por id' }),
     (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.HttpCode)(200),
     (0, common_1.UseGuards)(Auth_guard_1.AuthGuard),
@@ -63,6 +65,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getUserById", null);
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Actualizar un usuario' }),
     (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.HttpCode)(200),
     (0, common_1.UseGuards)(Auth_guard_1.AuthGuard),
@@ -75,6 +78,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "updateUser", null);
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Eliminar un usuario' }),
     (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.HttpCode)(200),
     (0, common_1.UseGuards)(Auth_guard_1.AuthGuard),

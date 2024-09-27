@@ -23,7 +23,20 @@ async function bootstrap() {
   const swaggerConfig = new DocumentBuilder()
     .setTitle('REST API Proyecto Integrador Modulo 4')
     .setDescription(
-      'Esta es una API REST construida con NestJs para ser empleada como demo del proyecto integrador del modulo 4 de soyHenry',
+      `
+      Esta es una API REST construida con NestJs para el proyecto integrador del módulo 4 de soyHenry. 
+      Usa esta documentación para interactuar con los diferentes endpoints de la API.
+
+      Esta API permite la autentificación por token y por roles.
+
+      Para autenticarse:
+      - Utiliza el endpoint /auth/login para obtener un token.
+      - Usa el token en los headers para acceder a endpoints protegidos.
+
+      Para autenticarse con rol admin:
+      - Al crear el usuario en /auth/signup coloca la propiedad isAdmin en true
+
+      `,
     )
     .setVersion('1.0')
     .addBearerAuth()
@@ -31,7 +44,9 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, swaggerConfig);
 
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('api', app, document, {
+    customSiteTitle: 'API Proyecto Integrador',
+  });
 
   await app.listen(3000);
 }

@@ -13,13 +13,34 @@ import {
 import { FilesManagerService } from './filesManager.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from '../auth/guards/Auth.guard';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 
 @ApiTags('Files')
 @Controller('files')
 export class FilesManagerController {
   constructor(private filesManagerService: FilesManagerService) {}
 
+  @ApiOperation({ summary: 'Subir una imagen' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        image: {
+          type: 'string',
+          format: 'binary',
+          description:
+            'El archivo de imagen que se desea subir (jpg, jpeg, png, webp)',
+        },
+      },
+    },
+  })
   @ApiBearerAuth()
   @Post('uploadImage/:uuid')
   @UseGuards(AuthGuard)

@@ -37,6 +37,7 @@ let OrdersController = class OrdersController {
 };
 exports.OrdersController = OrdersController;
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Obtener ordenes' }),
     (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.Get)(':uuid'),
     (0, common_1.UseGuards)(Auth_guard_1.AuthGuard),
@@ -47,6 +48,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], OrdersController.prototype, "getOrder", null);
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Agregar orden' }),
     (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.Post)(),
     (0, common_1.UseGuards)(Auth_guard_1.AuthGuard),

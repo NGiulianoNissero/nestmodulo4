@@ -53,10 +53,10 @@ let ProductsService = class ProductsService {
         }
     }
     async updateProduct(body, id) {
-        await this.productsRepository.updateProduct(body, id);
+        return await this.productsRepository.updateProduct(body, id);
     }
     async deleteProduct(id) {
-        await this.productsRepository.deleteProduct(id);
+        return await this.productsRepository.deleteProduct(id);
     }
     async preloadProducts() {
         return await this.productsRepository.preloadProducts();

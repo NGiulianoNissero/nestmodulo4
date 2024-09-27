@@ -27,6 +27,7 @@ let CategoriesController = class CategoriesController {
 };
 exports.CategoriesController = CategoriesController;
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Obtener categorias' }),
     (0, common_1.Get)(),
     (0, common_1.HttpCode)(200),
     openapi.ApiResponse({ status: 200, type: [require("../../entities/categories.entity").ECategory] }),
@@ -35,6 +36,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], CategoriesController.prototype, "getCategories", null);
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Cargar categorias' }),
     (0, common_1.Post)('seeder'),
     (0, common_1.HttpCode)(200),
     openapi.ApiResponse({ status: 200, type: [require("../../entities/categories.entity").ECategory] }),

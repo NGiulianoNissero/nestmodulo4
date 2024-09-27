@@ -32,7 +32,7 @@ export class AuthService {
       password: hasdedPassword,
     });
 
-    const { password, isAdmin, ...userWithoutPasswordAndWithoutRole } = newUser;
+    const { password, ...userWithoutPasswordAndWithoutRole } = newUser;
 
     return userWithoutPasswordAndWithoutRole;
   }

@@ -31,7 +31,7 @@ let AuthService = class AuthService {
             ...user,
             password: hasdedPassword,
         });
-        const { password, isAdmin, ...userWithoutPasswordAndWithoutRole } = newUser;
+        const { password, ...userWithoutPasswordAndWithoutRole } = newUser;
         return userWithoutPasswordAndWithoutRole;
     }
     async signIn(email, password) {

@@ -19,7 +19,6 @@ const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const preloadProducts_1 = require("../../helpers/preloadProducts");
 const categories_service_1 = require("../categories/categories.service");
-const class_validator_1 = require("class-validator");
 let ProductsRepository = class ProductsRepository {
     constructor(productRepository, categoriesService, dataSource) {
         this.productRepository = productRepository;
@@ -120,11 +119,9 @@ let ProductsRepository = class ProductsRepository {
         return productsPage;
     }
     async getProductById(id) {
-        if (!(0, class_validator_1.isUUID)(id))
-            throw new common_1.BadRequestException(`El uuid ${id} no es un uuid valido.`);
         const productById = await this.productRepository.findOneBy({ id });
         if (!productById)
-            throw new common_1.BadRequestException('No existe un producto con el id proporcionado.');
+            throw new common_1.BadRequestException(`No se encontro un producto con el uuid ${id}`);
         return productById;
     }
     async createProduct(product, queryRunner) {
@@ -138,12 +135,22 @@ let ProductsRepository = class ProductsRepository {
         return newProduct;
     }
     async updateProduct(body, id) {
-        const updatedProduct = await this.productRepository.update({ id }, body);
-        if (updatedProduct.affected === 0)
-            throw new common_1.BadRequestException('No se encontro un producto con el uuid proporcionado.');
+        const productFounded = await this.productRepository.findOneBy({ id });
+        if (!productFounded)
+            throw new common_1.BadRequestException(`No se encontro un producto con el uuid ${id}`);
+        const updatedProduct = {
+            ...productFounded,
+            ...body,
+        };
+        await this.productRepository.save(updatedProduct);
+        return updatedProduct;
     }
     async deleteProduct(id) {
+        const productFounded = await this.productRepository.findOneBy({ id });
+        if (!productFounded)
+            throw new common_1.BadRequestException(`No se encontro un producto con el uuid ${id}`);
         await this.productRepository.delete({ id });
+        return productFounded;
     }
     async preloadProducts() {
         const productsFounded = await this.productRepository.find();
@@ -161,7 +168,7 @@ let ProductsRepository = class ProductsRepository {
                     description,
                     price,
                     stock,
-                    category: category,
+                    category,
                 };
                 const newProduct = await queryRunner.manager.create(products_entity_1.EProduct, productData);
                 await queryRunner.manager.save(products_entity_1.EProduct, newProduct);

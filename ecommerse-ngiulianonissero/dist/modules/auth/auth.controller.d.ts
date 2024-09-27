@@ -10,6 +10,7 @@ export declare class AuthController {
         email: string;
         phone: number;
         address: string;
+        isAdmin?: boolean;
         country?: string;
         city?: string;
         orders?: import("../../entities/orders.entity").EOrder[];

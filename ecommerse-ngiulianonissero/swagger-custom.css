@@ -1,0 +1,94 @@
+body {
+  background-color: #f4f7f9;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: #333;
+  font-weight: bold;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  padding: 8px 16px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+input[type='text'],
+textarea {
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  padding: 8px;
+  width: 100%;
+}
+
+label {
+  color: #555;
+  font-weight: bold;
+}
+
+.opblock-summary {
+  background-color: #007bff;
+  color: white;
+}
+
+.opblock-summary:hover {
+  background-color: #0056b3;
+}
+
+.opblock {
+  border-left: 4px solid #007bff;
+}
+
+.opblock-tag {
+  background-color: #f4f7f9;
+  border-left: 4px solid #007bff;
+}
+
+.opblock-get {
+  border-color: #28a745;
+}
+
+.opblock-post {
+  border-color: #007bff;
+}
+
+.opblock-put {
+  border-color: #ffc107;
+}
+
+.opblock-delete {
+  border-color: #dc3545;
+}
+
+select {
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  padding: 6px;
+}
+
+.response-col_status,
+.response-col_description {
+  color: #333;
+  font-weight: bold;
+}
+
+.response-col_description {
+  background-color: #e9ecef;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+pre {
+  background-color: #f4f7f9;
+  border-radius: 4px;
+  padding: 10px;
+}

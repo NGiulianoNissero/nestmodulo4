@@ -8,7 +8,7 @@ export declare class ProductsController {
     getProducts(page?: number, limit?: number): Promise<EProduct[]>;
     getProductById(id: string): Promise<EProduct>;
     createProduct(body: CreateProductDto): Promise<EProduct>;
-    updateProduct(id: string, body: UpdateProductDto): Promise<void>;
-    deleteProduct(id: string): Promise<void>;
+    updateProduct(id: string, body: UpdateProductDto): Promise<EProduct>;
+    deleteProduct(id: string): Promise<EProduct>;
     preloadProducts(): Promise<EProduct[]>;
 }

@@ -29,6 +29,20 @@ let FilesManagerController = class FilesManagerController {
 };
 exports.FilesManagerController = FilesManagerController;
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Subir una imagen' }),
+    (0, swagger_1.ApiConsumes)('multipart/form-data'),
+    (0, swagger_1.ApiBody)({
+        schema: {
+            type: 'object',
+            properties: {
+                image: {
+                    type: 'string',
+                    format: 'binary',
+                    description: 'El archivo de imagen que se desea subir (jpg, jpeg, png, webp)',
+                },
+            },
+        },
+    }),
     (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.Post)('uploadImage/:uuid'),
     (0, common_1.UseGuards)(Auth_guard_1.AuthGuard),

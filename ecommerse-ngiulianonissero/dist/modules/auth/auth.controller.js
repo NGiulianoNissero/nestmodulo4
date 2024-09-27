@@ -36,6 +36,7 @@ let AuthController = class AuthController {
 };
 exports.AuthController = AuthController;
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Registrar un usuario' }),
     (0, common_1.HttpCode)(201),
     (0, common_1.Post)('signup'),
     openapi.ApiResponse({ status: 201 }),
@@ -45,6 +46,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "signUp", null);
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Autenticar un usuario' }),
     (0, common_1.HttpCode)(200),
     (0, common_1.Post)('signin'),
     openapi.ApiResponse({ status: 200 }),

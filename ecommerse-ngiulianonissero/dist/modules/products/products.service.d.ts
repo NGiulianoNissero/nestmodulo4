@@ -12,7 +12,7 @@ export declare class ProductsService {
     getProducts(page: number, limit: number): Promise<EProduct[]>;
     getProductById(id: string): Promise<EProduct>;
     createProduct(body: CreateProductDto): Promise<EProduct>;
-    updateProduct(body: UpdateProductDto, id: string): Promise<void>;
-    deleteProduct(id: string): Promise<void>;
+    updateProduct(body: UpdateProductDto, id: string): Promise<EProduct>;
+    deleteProduct(id: string): Promise<EProduct>;
     preloadProducts(): Promise<EProduct[]>;
 }

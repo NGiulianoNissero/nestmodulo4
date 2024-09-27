@@ -8,6 +8,7 @@ declare const _default: (() => {
     database: string;
     autoLoadEntities: boolean;
     synchronize: boolean;
+    dropSchema: boolean;
     entities: string[];
     migrations: string[];
 }) & import("@nestjs/config").ConfigFactoryKeyHost<{
@@ -19,6 +20,7 @@ declare const _default: (() => {
     database: string;
     autoLoadEntities: boolean;
     synchronize: boolean;
+    dropSchema: boolean;
     entities: string[];
     migrations: string[];
 }>;

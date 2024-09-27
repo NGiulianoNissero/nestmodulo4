@@ -12,7 +12,7 @@ export declare class ProductsRepository {
     getProducts(page: number, limit: number): Promise<EProduct[]>;
     getProductById(id: string): Promise<EProduct>;
     createProduct(product: EProduct, queryRunner: QueryRunner): Promise<EProduct>;
-    updateProduct(body: UpdateProductDto, id: string): Promise<void>;
-    deleteProduct(id: string): Promise<void>;
+    updateProduct(body: UpdateProductDto, id: string): Promise<EProduct>;
+    deleteProduct(id: string): Promise<EProduct>;
     preloadProducts(): Promise<EProduct[]>;
 }

@@ -11,6 +11,7 @@ export declare class AuthService {
         email: string;
         phone: number;
         address: string;
+        isAdmin?: boolean;
         country?: string;
         city?: string;
         orders?: import("../../entities/orders.entity").EOrder[];

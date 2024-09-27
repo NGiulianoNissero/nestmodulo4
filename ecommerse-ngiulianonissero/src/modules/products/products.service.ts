@@ -53,12 +53,12 @@ export class ProductsService {
     }
   }
 
-  async updateProduct(body: UpdateProductDto, id: string): Promise<void> {
-    await this.productsRepository.updateProduct(body, id);
+  async updateProduct(body: UpdateProductDto, id: string): Promise<EProduct> {
+    return await this.productsRepository.updateProduct(body, id);
   }
 
-  async deleteProduct(id: string): Promise<void> {
-    await this.productsRepository.deleteProduct(id);
+  async deleteProduct(id: string): Promise<EProduct> {
+    return await this.productsRepository.deleteProduct(id);
   }
 
   async preloadProducts(): Promise<EProduct[]> {
