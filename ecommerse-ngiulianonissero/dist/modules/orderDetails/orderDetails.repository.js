@@ -18,10 +18,12 @@ const typeorm_1 = require("@nestjs/typeorm");
 const orderDetails_entity_1 = require("../../entities/orderDetails.entity");
 const typeorm_2 = require("typeorm");
 const products_service_1 = require("../products/products.service");
+const products_entity_1 = require("../../entities/products.entity");
 let OrderDetailsRepository = class OrderDetailsRepository {
-    constructor(orderDetailsRepository, productsService) {
+    constructor(orderDetailsRepository, productsService, productRepository) {
         this.orderDetailsRepository = orderDetailsRepository;
         this.productsService = productsService;
+        this.productRepository = productRepository;
     }
     async createOrderDetails(products, order) {
         let totalPrice = 0;
@@ -34,7 +36,7 @@ let OrderDetailsRepository = class OrderDetailsRepository {
             if (productFounded.stock <= 0)
                 throw new common_1.BadRequestException(`El producto con el uuid ${id} no tiene mas stock.`);
             productFounded.stock--;
-            await this.productsService.updateProduct({ stock: productFounded.stock-- }, id);
+            await this.productRepository.save(productFounded);
             productList.push(productFounded);
             const productPrice = Number(productFounded.price);
             if (isNaN(productPrice))
@@ -59,7 +61,9 @@ exports.OrderDetailsRepository = OrderDetailsRepository;
 exports.OrderDetailsRepository = OrderDetailsRepository = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(orderDetails_entity_1.EOrderDetails)),
+    __param(2, (0, typeorm_1.InjectRepository)(products_entity_1.EProduct)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
-        products_service_1.ProductsService])
+        products_service_1.ProductsService,
+        typeorm_2.Repository])
 ], OrderDetailsRepository);
 //# sourceMappingURL=orderDetails.repository.js.map

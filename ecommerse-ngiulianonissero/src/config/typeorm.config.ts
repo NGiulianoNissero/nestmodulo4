@@ -10,8 +10,7 @@ const typeOrmConfig = {
   password: DB_PASS,
   database: DB_DATABASE,
   autoLoadEntities: true,
-  synchronize: true,
-  dropSchema: true,
+  synchronize: false,
   entities: ['dist/**/*.entity{.ts,.js}'],
   migrations: ['dist/migrations/*{.js,.ts}'],
 };

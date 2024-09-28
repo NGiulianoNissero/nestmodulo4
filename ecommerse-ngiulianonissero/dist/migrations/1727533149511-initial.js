@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Initial1726963965716 = void 0;
-class Initial1726963965716 {
+exports.Initial1727533149511 = void 0;
+class Initial1727533149511 {
     constructor() {
-        this.name = 'Initial1726963965716';
+        this.name = 'Initial1727533149511';
     }
     async up(queryRunner) {
         await queryRunner.query(`CREATE TABLE "categories" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "name" character varying(50) NOT NULL, CONSTRAINT "PK_24dbc6126a28ff948da33e97d3b" PRIMARY KEY ("id"))`);
@@ -36,5 +36,5 @@ class Initial1726963965716 {
         await queryRunner.query(`DROP TABLE "categories"`);
     }
 }
-exports.Initial1726963965716 = Initial1726963965716;
-//# sourceMappingURL=1726963965716-initial.js.map
+exports.Initial1727533149511 = Initial1727533149511;
+//# sourceMappingURL=1727533149511-initial.js.map

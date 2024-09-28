@@ -13,6 +13,7 @@ export class OrderDetailsRepository {
     @InjectRepository(EOrderDetails)
     private orderDetailsRepository: Repository<EOrderDetails>,
     private productsService: ProductsService,
+    @InjectRepository(EProduct) private productRepository: Repository<EProduct>,
   ) {}
 
   async createOrderDetails(
@@ -38,10 +39,7 @@ export class OrderDetailsRepository {
         );
 
       productFounded.stock--;
-      await this.productsService.updateProduct(
-        { stock: productFounded.stock-- },
-        id,
-      );
+      await this.productRepository.save(productFounded);
 
       productList.push(productFounded);
 
